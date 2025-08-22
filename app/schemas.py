@@ -1,25 +1,28 @@
-from pydantic import BaseModel
 from datetime import date
-from typing import Optional, List
+
+from pydantic import BaseModel
+
 
 class TransactionCreate(BaseModel):
     date: date
     merchant: str
     amount: float
-    category: Optional[str] = None
-    currency: Optional[str] = "USD"
+    category: str | None = None
+    currency: str | None = "USD"
+
 
 class TransactionOut(BaseModel):
     id: int
     date: date
     merchant: str
     amount: float
-    category: Optional[str]
+    category: str | None
     currency: str
     normalized_merchant: str
 
     class Config:
         from_attributes = True
+
 
 class SubscriptionOut(BaseModel):
     id: int
@@ -31,6 +34,7 @@ class SubscriptionOut(BaseModel):
 
     class Config:
         from_attributes = True
+
 
 class AnomalyOut(BaseModel):
     id: int

@@ -1,9 +1,9 @@
 from fastapi import FastAPI
+
 from app.database import Base, engine
-from app import models
-from app.settings import settings
+from app.routers import anomalies, subscriptions, transactions
 from app.scheduler import start_scheduler
-from app.routers import transactions, subscriptions, anomalies
+from app.settings import settings
 
 app = FastAPI(title="Subscription Expense Guard", version="1.0.0")
 
@@ -14,10 +14,12 @@ app.include_router(transactions.router)
 app.include_router(subscriptions.router)
 app.include_router(anomalies.router)
 
+
 @app.on_event("startup")
 def startup():
     if settings.scheduler_enabled:
         start_scheduler()
+
 
 @app.get("/healthz")
 def health():

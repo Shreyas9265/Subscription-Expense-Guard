@@ -1,11 +1,15 @@
-from fastapi import APIRouter, Depends, UploadFile, File, HTTPException
+import os
+import shutil
+import tempfile
+
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from sqlalchemy.orm import Session
-from typing import List
-import tempfile, shutil, os
+
+from app import crud, ingestion, schemas
 from app.database import get_db
-from app import schemas, models, crud, ingestion
 
 router = APIRouter(prefix="/ingest", tags=["ingest"])
+
 
 @router.post("/csv")
 def ingest_csv(file: UploadFile = File(...), db: Session = Depends(get_db)):
@@ -22,7 +26,8 @@ def ingest_csv(file: UploadFile = File(...), db: Session = Depends(get_db)):
     finally:
         os.remove(tmp_path)
 
-@router.get("/transactions", response_model=List[schemas.TransactionOut], tags=["transactions"])
+
+@router.get("/transactions", response_model=list[schemas.TransactionOut], tags=["transactions"])
 def list_transactions(limit: int = 100, offset: int = 0, db: Session = Depends(get_db)):
     txns = crud.list_transactions(db, limit=limit, offset=offset)
     return txns

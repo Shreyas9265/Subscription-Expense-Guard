@@ -1,5 +1,5 @@
 from app.ingestion import parse_csv_to_transactions
-import os
+
 
 def test_parse_csv_minimal(tmp_path):
     p = tmp_path / "t.csv"

@@ -1,11 +1,13 @@
 from __future__ import annotations
-from typing import List, Optional
-from datetime import date, timedelta
-from statistics import mean
+
 import re
+from datetime import timedelta
+from statistics import mean
+
 from app import models
 
 MERCHANT_NORMALIZE = re.compile(r"[^a-z0-9]+")
+
 
 def normalize_merchant(name: str) -> str:
     name = name.lower().strip()
@@ -13,12 +15,13 @@ def normalize_merchant(name: str) -> str:
     name = re.sub(r"\binc\b|\bllc\b|\bltd\b|\bco\b", "", name)
     return re.sub(r"\s+", " ", name).strip()
 
-def detect_subscription(nm: str, txns: List[models.Transaction]) -> Optional[models.Subscription]:
+
+def detect_subscription(nm: str, txns: list[models.Transaction]) -> models.Subscription | None:
     if len(txns) < 3:
         return None
     # Compute gaps between consecutive charges (in days)
     dates = [t.date for t in txns]
-    gaps = [(dates[i+1] - dates[i]).days for i in range(len(dates)-1)]
+    gaps = [(dates[i + 1] - dates[i]).days for i in range(len(dates) - 1)]
     if not gaps:
         return None
     avg_gap = mean(gaps)
@@ -42,8 +45,9 @@ def detect_subscription(nm: str, txns: List[models.Transaction]) -> Optional[mod
         next_charge=next_charge,
     )
 
-def detect_anomalies(txns: List[models.Transaction]) -> List[models.Anomaly]:
-    anomalies: List[models.Anomaly] = []
+
+def detect_anomalies(txns: list[models.Transaction]) -> list[models.Anomaly]:
+    anomalies: list[models.Anomaly] = []
     if len(txns) < 2:
         return anomalies
     amounts = [abs(t.amount) for t in txns]
@@ -52,11 +56,13 @@ def detect_anomalies(txns: List[models.Transaction]) -> List[models.Anomaly]:
     # Flag price hikes > 25% over average
     for t in txns:
         if abs(t.amount) > 1.25 * avg_amt:
-            anomalies.append(models.Anomaly(
-                transaction_id=t.id,
-                type="price_hike",
-                message=f"Charge {abs(t.amount):.2f} > 25% above average {avg_amt:.2f} for {t.normalized_merchant}."
-            ))
+            anomalies.append(
+                models.Anomaly(
+                    transaction_id=t.id,
+                    type="price_hike",
+                    message=f"Charge {abs(t.amount):.2f} > 25% above average {avg_amt:.2f} for {t.normalized_merchant}.",
+                )
+            )
 
     # Duplicate same-day charges
     by_day = {}
@@ -66,9 +72,11 @@ def detect_anomalies(txns: List[models.Transaction]) -> List[models.Anomaly]:
     for key, items in by_day.items():
         if len(items) > 1:
             for t in items:
-                anomalies.append(models.Anomaly(
-                    transaction_id=t.id,
-                    type="duplicate",
-                    message=f"Possible duplicate: {len(items)} charges of {abs(t.amount):.2f} on {t.date}."
-                ))
+                anomalies.append(
+                    models.Anomaly(
+                        transaction_id=t.id,
+                        type="duplicate",
+                        message=f"Possible duplicate: {len(items)} charges of {abs(t.amount):.2f} on {t.date}.",
+                    )
+                )
     return anomalies

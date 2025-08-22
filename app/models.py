@@ -1,6 +1,8 @@
-from sqlalchemy import Column, Integer, String, Float, Date, Boolean, ForeignKey
+from sqlalchemy import Column, Date, Float, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
+
 from app.database import Base
+
 
 class Transaction(Base):
     __tablename__ = "transactions"
@@ -12,6 +14,7 @@ class Transaction(Base):
     currency = Column(String, default="USD")
     normalized_merchant = Column(String, index=True)
 
+
 class Subscription(Base):
     __tablename__ = "subscriptions"
     id = Column(Integer, primary_key=True, index=True)
@@ -20,6 +23,7 @@ class Subscription(Base):
     avg_amount = Column(Float)
     last_charge = Column(Date)
     next_charge = Column(Date)
+
 
 class Anomaly(Base):
     __tablename__ = "anomalies"

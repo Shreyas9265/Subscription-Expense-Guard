@@ -1,5 +1,6 @@
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+
 class Settings(BaseSettings):
     database_url: str = "sqlite:///./sea.db"
     scheduler_enabled: bool = True
@@ -10,5 +11,6 @@ class Settings(BaseSettings):
         env_prefix="",
         case_sensitive=False,
     )
+
 
 settings = Settings()
