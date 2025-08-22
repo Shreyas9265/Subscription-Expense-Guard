@@ -1,0 +1,11 @@
+date,merchant,amount,category,currency
+2025-01-01,Netflix,15.99,Entertainment,USD
+2025-02-01,Netflix,15.99,Entertainment,USD
+2025-03-01,Netflix,17.99,Entertainment,USD
+2025-03-02,Coffee Shop,4.50,Food,USD
+2025-03-02,Coffee Shop,4.50,Food,USD
+2025-03-08,Spotify,9.99,Entertainment,USD
+2025-03-15,Electric Co,120.00,Utilities,USD
+2025-03-22,Spotify,11.99,Entertainment,USD
+2025-03-29,Spotify,11.99,Entertainment,USD
+2025-04-01,Netflix,17.99,Entertainment,USD

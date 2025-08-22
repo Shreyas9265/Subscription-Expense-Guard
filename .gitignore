@@ -1,0 +1,30 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.so
+*.dylib
+*.dll
+.pytest_cache/
+.mypy_cache/
+.cache/
+
+# Environments
+.env
+.env.*
+.venv/
+venv/
+
+# Editors
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# DB / data
+*.db
+sea.db
+
+# Build
+dist/
+build/
