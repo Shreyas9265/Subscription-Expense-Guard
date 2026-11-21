@@ -13,3 +13,8 @@ ignore = ["E203"]
 [tool.ruff.lint.flake8-bugbear]
 # FastAPI's dependency injection uses these calls as argument defaults by design.
 extend-immutable-calls = ["fastapi.Depends", "fastapi.File", "fastapi.Query", "fastapi.Form"]
+
+[tool.pytest.ini_options]
+# Tests import the `app` package from the repo root.
+pythonpath = ["."]
+testpaths = ["app/tests"]
