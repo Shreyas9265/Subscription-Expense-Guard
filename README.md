@@ -1,5 +1,8 @@
 # Subscription Expense Guard (SEA)
 
+**🔴 Live demo:** https://subscription-expense-guard.vercel.app/docs (interactive API docs, seeded with sample transactions) · redeploy with `vercel/deploy.sh`
+
+
 A production-style backend project for software engineering portfolios. SEA ingests bank/card CSVs, auto-detects **recurring subscriptions**, flags **price hikes / anomalies**, and **forecasts** next charges. Built with **FastAPI**, **SQLAlchemy**, and **APScheduler**; ships with tests, Docker, and CI.
 
 ## Features
