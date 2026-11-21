@@ -60,7 +60,10 @@ def detect_anomalies(txns: list[models.Transaction]) -> list[models.Anomaly]:
                 models.Anomaly(
                     transaction_id=t.id,
                     type="price_hike",
-                    message=f"Charge {abs(t.amount):.2f} > 25% above average {avg_amt:.2f} for {t.normalized_merchant}.",
+                    message=(
+                        f"Charge {abs(t.amount):.2f} > 25% above average {avg_amt:.2f} "
+                        f"for {t.normalized_merchant}."
+                    ),
                 )
             )
 
@@ -69,14 +72,17 @@ def detect_anomalies(txns: list[models.Transaction]) -> list[models.Anomaly]:
     for t in txns:
         key = (t.date, round(abs(t.amount), 2))
         by_day.setdefault(key, []).append(t)
-    for key, items in by_day.items():
+    for items in by_day.values():
         if len(items) > 1:
             for t in items:
                 anomalies.append(
                     models.Anomaly(
                         transaction_id=t.id,
                         type="duplicate",
-                        message=f"Possible duplicate: {len(items)} charges of {abs(t.amount):.2f} on {t.date}.",
+                        message=(
+                            f"Possible duplicate: {len(items)} charges of "
+                            f"{abs(t.amount):.2f} on {t.date}."
+                        ),
                     )
                 )
     return anomalies
