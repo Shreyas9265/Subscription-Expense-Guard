@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+/* Layout: one 1200px column. A source bar (sample vs. your upload), KPI tiles, then
+   "what's coming / what's wrong" side by side, charts, the two tables, and how it works. */
+:root {
+  --bg: #f4f5f2;
+  --surface: #ffffff;
+  --surface-2: #f8f9f6;
+  --chart-surface: #fcfcfb;
+  --ink: #111513;
+  --muted: #52514e;
+  --faint: #7c7b76;
+  --line: #e2e4de;
+  --brand: #0d6e5c;
+  --brand-ink: #ffffff;
+  --brand-soft: #e1f1ec;
+  /* categorical chart slots (validated reference palette, light) */
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a; --s4: #eda100; --s5: #e87ba4; --s-other: #a3a29d;
+  /* status (fixed; always paired with an icon + label) */
+  --warning: #fab219; --serious: #ec835a; --critical: #d03b3b; --good: #0ca30c;
+  --f-body: "Manrope", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101211; --surface: #1a1a19; --surface-2: #151615; --chart-surface: #1a1a19;
+    --ink: #f0efec; --muted: #c3c2b7; --faint: #8f8e87; --line: #2d2e2b;
+    --brand: #3cbf9b; --brand-ink: #06231c; --brand-soft: #173a31;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s-other: #6f6e69;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101211; --surface: #1a1a19; --surface-2: #151615; --chart-surface: #1a1a19;
+  --ink: #f0efec; --muted: #c3c2b7; --faint: #8f8e87; --line: #2d2e2b;
+  --brand: #3cbf9b; --brand-ink: #06231c; --brand-soft: #173a31;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70; --s4: #c98500; --s5: #d55181; --s-other: #6f6e69;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-brand: var(--brand);
+  --color-brand-ink: var(--brand-ink);
+  --color-brand-soft: var(--brand-soft);
+  --color-critical: var(--critical);
+  --color-warning: var(--warning);
+  --font-body: var(--f-body);
+  --font-mono: var(--f-mono);
+}
+
+@layer base {
+  body { background: var(--bg); color: var(--ink); font-family: var(--f-body); -webkit-font-smoothing: antialiased; }
+  :focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 6px; }
+  .num { font-variant-numeric: tabular-nums; }
+}
+
+@layer components {
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; }
+  .eyebrow { font-family: var(--f-mono); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+  .btn { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; font-size: 14px; border-radius: 10px; padding: 9px 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); cursor: pointer; text-decoration: none; transition: border-color .15s, background .15s; }
+  .btn:hover { border-color: var(--ink); }
+  .btn-primary { background: var(--brand); border-color: var(--brand); color: var(--brand-ink); }
+  .btn-primary:hover { filter: brightness(1.08); border-color: var(--brand); }
+  .chip { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); color: var(--muted); }
+  .wrap { max-width: 1200px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left)); padding-right: max(16px, env(safe-area-inset-right)); }
+  @media (min-width: 768px) { .wrap { padding-left: max(28px, env(safe-area-inset-left)); padding-right: max(28px, env(safe-area-inset-right)); } }
+}
+
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }

@@ -1,6 +1,21 @@
 # Subscription Expense Guard (SEA)
 
-**🔴 Live demo:** https://subscription-expense-guard.vercel.app/docs (interactive API docs, seeded with sample transactions) · redeploy with `vercel/deploy.sh`
+**🔴 Live dashboard:** https://subscription-expense-guard.vercel.app · **API docs:** https://subscription-expense-guard.vercel.app/docs · redeploy with `vercel/deploy.sh`
+
+## Web dashboard (`web/`)
+
+A React + TypeScript + Tailwind dashboard on top of the API: upload a bank-statement CSV (or use the
+6-month synthetic sample) to see recurring cost per month, a 30-day charge forecast, price-hike and
+duplicate-charge alerts, spending by category, and sortable subscription and transaction tables.
+
+It calls `POST /analyze` (and `GET /analyze/sample`), a stateless endpoint that returns transactions,
+subscriptions and anomalies in one response. Serverless instances don't share memory, so the dashboard
+never depends on an earlier upload being stored. Both endpoints reuse the same detection rules as the
+rest of the API.
+
+```bash
+cd web && npm install && npm run dev   # proxies /analyze to the live API (override with API_URL)
+```
 
 
 A production-style backend project for software engineering portfolios. SEA ingests bank/card CSVs, auto-detects **recurring subscriptions**, flags **price hikes / anomalies**, and **forecasts** next charges. Built with **FastAPI**, **SQLAlchemy**, and **APScheduler**; ships with tests, Docker, and CI.
