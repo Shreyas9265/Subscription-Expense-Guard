@@ -20,7 +20,7 @@ jobs:
       - name: Lint & Format
         run: |
           ruff --version
-          ruff . --output-format=github
+          ruff check . --output-format=github
           black --check .
       - name: Tests
         run: |

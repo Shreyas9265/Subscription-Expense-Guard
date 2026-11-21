@@ -1,4 +1,5 @@
 """Vercel serverless entry point: a self-seeding live demo of Subscription Expense Guard."""
+
 import os
 from pathlib import Path
 
@@ -14,7 +15,7 @@ from app.main import app  # noqa: E402  (creates the tables)
 
 SAMPLE = Path(__file__).resolve().parent / "app" / "sample_data" / "transactions_sample.csv"
 
-# Seed the demo with the bundled sample transactions on a cold start, then detect subscriptions/anomalies.
+# On a cold start, seed the bundled sample transactions, then detect subscriptions/anomalies.
 with SessionLocal() as db:
     if db.query(models.Transaction).count() == 0 and SAMPLE.exists():
         ingestion.ingest_transactions(db, str(SAMPLE))
