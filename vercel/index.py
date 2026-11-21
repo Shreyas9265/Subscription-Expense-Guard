@@ -1,4 +1,7 @@
-"""Vercel serverless entry point: a self-seeding live demo of Subscription Expense Guard."""
+"""Vercel serverless entry point: the API behind the dashboard, seeded with demo data.
+
+The React dashboard (web/) is built into public/ and served by Vercel's CDN at "/".
+"""
 
 import os
 from pathlib import Path
@@ -7,13 +10,11 @@ from pathlib import Path
 os.environ.setdefault("DATABASE_URL", "sqlite:////tmp/sea.db")
 os.environ.setdefault("SCHEDULER_ENABLED", "false")
 
-from fastapi.responses import RedirectResponse  # noqa: E402
-
 from app import crud, ingestion, models  # noqa: E402
 from app.database import SessionLocal  # noqa: E402
-from app.main import app  # noqa: E402  (creates the tables)
+from app.main import app  # noqa: E402  (creates the tables; Vercel serves this `app`)
 
-SAMPLE = Path(__file__).resolve().parent / "app" / "sample_data" / "transactions_sample.csv"
+SAMPLE = Path(__file__).resolve().parent / "app" / "sample_data" / "demo_transactions.csv"
 
 # On a cold start, seed the bundled sample transactions, then detect subscriptions/anomalies.
 with SessionLocal() as db:
@@ -23,6 +24,4 @@ with SessionLocal() as db:
         crud.recompute_anomalies(db)
 
 
-@app.get("/", include_in_schema=False)
-def home():
-    return RedirectResponse(url="/docs")
+__all__ = ["app"]

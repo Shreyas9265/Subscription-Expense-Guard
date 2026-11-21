@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 
 from app.database import Base, engine
-from app.routers import anomalies, subscriptions, transactions
+from app.routers import analyze, anomalies, subscriptions, transactions
 from app.scheduler import start_scheduler
 from app.settings import settings
 
@@ -13,6 +13,7 @@ Base.metadata.create_all(bind=engine)
 app.include_router(transactions.router)
 app.include_router(subscriptions.router)
 app.include_router(anomalies.router)
+app.include_router(analyze.router)
 
 
 @app.on_event("startup")
