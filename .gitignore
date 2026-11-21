@@ -28,3 +28,4 @@ sea.db
 # Build
 dist/
 build/
+.vercel
